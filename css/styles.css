@@ -1,0 +1,181 @@
+* {
+    font-family: "Helvetica Neue Bold", Helvetica, Arial, sans-serif;
+    font-weight: 700;
+    box-sizing: border-box;
+}
+
+/* Per google API documentation */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+
+h3 {
+    margin: 0;
+}
+
+
+/* FLEXBOX */
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    color: lightgray;
+    font-weight: 400;
+    background-color: black;
+    text-align: center;
+    height: 100%;
+}
+
+/* Title line */
+.title {
+    text-align: center;
+    font-size: 2vw;
+}
+
+/* Image                                                        */
+/* To keep image proportiately scaled:                          */
+/* Put img in flex container then keep height = column-width:   */
+/* Could use width=100% but this ims wrong for this columns:    */
+.img-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.img-container img {
+    height: 3vw;
+    width: 3vw;
+    margin-left: 1vw;
+    margin-right: 1vw;
+}
+
+/* Divider */
+
+.divider {
+    height: 2px;
+    background-color: white;
+}
+
+/* Filter line */
+
+.filter-button-container {
+    display: flex;
+    background-color: blue;
+    color: white;
+
+}
+
+.filter-button-container img {
+    font-weight: 200;
+    font-size: 75%;
+    height: 1vw;
+    width: w;
+}
+
+/* List locations column*/
+
+.list-container {
+    display: flex;
+    flex-direction: column;
+    font-size: 100%;
+}
+
+.listItem {
+    padding-top: 1vw;
+    padding-bottom: 1vw;
+    color: lightgray;
+    text-align: left;
+    border: 0;
+    background-color: black;
+}
+
+.listItemSelected {
+    padding-top: 1vw;
+    padding-bottom: 1vw;
+    color: white;
+    text-align: left;
+    border: 0;
+    background-color: lightgray;
+}
+
+
+/* Map column*/
+
+#map {  /* # handles 'id=' */
+    min-height: 400px;
+    max-width: 75%;
+    border: 3px solid black;
+}
+
+
+/* Map marker info window*/
+
+.yelpTitle {
+    text-align: left;
+    text-decoration: underline;
+    color: darkgray;
+}
+
+.yelpLink {
+    text-align: left;
+    float: left;
+    color: dodgerblue;
+}
+
+.textLeft {
+    text-align: left;
+}
+
+
+/* Column sizings*/
+
+.col-1 {
+     width: calc(1 * 100% / 12);
+}
+
+.col-2 {
+     width: calc(2 * 100% / 12);
+}
+
+.col-3 {
+     width: calc(3 * 100% / 12);
+}
+
+.col-4 {
+    width: calc(4 * 100% / 12);
+}
+
+.col-5 {
+     width: calc(5 * 100% / 12);
+}
+
+.col-6 {
+     width: calc(6 * 100% / 12);
+}
+
+.col-7 {
+     width: calc(7 * 100% / 12);
+}
+
+.col-8 {
+     width: calc(8 * 100% / 12);
+}
+
+.col-9 {
+     width: calc(9 * 100% / 12);
+}
+
+.col-10 {
+     width: calc(10 * 100% / 12);
+}
+
+.col-11 {
+     width: calc(11 * 100% / 12);
+}
+
+.col-12 {
+     width: calc(12 * 100% / 12);
+}
