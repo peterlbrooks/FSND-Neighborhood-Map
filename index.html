@@ -20,18 +20,18 @@
 
         <!-- Filter / row 3 -->
         <input class="col-2" type="text" name="filter" placeholder="selection" data-bind="textInput: currentFilter">
-        <div class="col-1 filter-button-container">
+        <!-- <div class="col-1 filter-button-container">
             <div class="col-2"></div>
             <button class="filter-button" data-bind="click: filterButtonClick">
                 <img class="col-2" src="img/filter.png"></img>
                 <span class="col-8">Filter</span>
              </button>
-        </div>
+        </div> -->
         <div class = "col-9"></div>
 
         <!-- Content rows -->
         <div class="col-3 list-container" data-bind="foreach: filteredLocs">
-            <button class="listItem" data-bind="text: title,
+            <button class="listItem" data-bind="text: $data.title,
                 click: $parent.filterButtonClick,
                 css: {listItemSelected: isSelected() == true}"></button>
         </div>

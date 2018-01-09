@@ -105,29 +105,34 @@ var ViewModel = function() {
     var self = this;
 
     self.currentFilter = ko.observable();
+    self.selectedLoc = ko.observable("hi");
+    self.currentLoc;
 
-    self.ListButtonClick = function(item) {
 
-        // item.isSelected(!item.isSelected());
-        // if (item.isSelected) {
-        //     console.log('item has been selected' + item);
-        //     //infowindow.open(map, marker);
+    // self.ListButtonClick = function(item) {
 
-        // }
+    //     // item.isSelected(!item.isSelected());
+    //     // if (item.isSelected) {
+    //     //     console.log('item has been selected' + item);
+    //     //     //infowindow.open(map, marker);
 
-    }
+    //     // }
 
-    self.filteredLocs = ko.computed(function () {
+    // }
+
+    self.filteredLocs = ko.pureComputed(function () {
 
         if (!self.currentFilter()) {
 
             setAllVisible();
-            console.log('in filtered locs no filter');
+            // console.log('in filtered locs no filter');
             return currentLocations();
 
         } else {
 
             return ko.utils.arrayFilter(currentLocations(), function (item) {
+
+                // console.log('in filtered locs with filter');
 
                 var filter = self.currentFilter().toLowerCase();
 
@@ -137,29 +142,52 @@ var ViewModel = function() {
                 } else {
 
                     item.marker.setVisible(false);
-                }
+                };
 
                 return item.title.toLowerCase().indexOf(filter) !== -1;
             });
 
-        }
+        };
 
     });
+
+    // self.locationSelected = function(item) {
+    //     console.log('in location selected item = ' + item +
+    //         'selected Loc = ' + self.selectedLoc());
+    //     if (item == self.selectedLoc())  {
+    //         return "filterListItem"
+    //     } else {
+    //         return "listItem";
+    //     }
+    // };
 
 
     // A filter item on the left hand list has been selected
     self.filterButtonClick = function (item) {
 
-        item.isSelected(!item.isSelected());
+        console.log('item button has been clicked = ' + item.title);
+
+        // item.isSelected(true);
+
+        if (self.currentLoc) {
+            // console.log('in filter button client current loc')
+            self.currentLoc.isSelected(false);
+        }
+
+        self.currentLoc = item;
+        item.isSelected(true);
+
+
+        // self.selectedLoc = item.title;
 
         if (item.isSelected) {
 
-            console.log('item has been selected title = ' + item.website);
+            // console.log('item has been selected title = ' + item.title);
             populateInfoWindow(item.marker, infoWindow)
 
-        }
+        };
 
-    }
+    };
 
 
     // Set all markers to be visible on map
