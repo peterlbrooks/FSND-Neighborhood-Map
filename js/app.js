@@ -87,7 +87,6 @@ var DataModel = function(locations) {
     ];
 
     self.Cambridge = { center: {lat: 42.3736, lng: -71.1097} };
-
     self.filterText = "";
 
 }
@@ -103,42 +102,26 @@ var currentMarker;
 var ViewModel = function() {
 
     var self = this;
-
-    self.currentFilter = ko.observable();
-    self.selectedLoc = ko.observable("hi");
-    self.currentLoc;
-
-
-    // self.ListButtonClick = function(item) {
-
-    //     // item.isSelected(!item.isSelected());
-    //     // if (item.isSelected) {
-    //     //     console.log('item has been selected' + item);
-    //     //     //infowindow.open(map, marker);
-
-    //     // }
-
-    // }
+    self.currentFilter = ko.observable();   // current filter text
+    self.currentSelectedLoc;                        // currently selected location
 
     self.filteredLocs = ko.pureComputed(function () {
 
         if (!self.currentFilter()) {
 
             setAllVisible();
-            // console.log('in filtered locs no filter');
             return currentLocations();
 
         } else {
 
             return ko.utils.arrayFilter(currentLocations(), function (item) {
 
-                // console.log('in filtered locs with filter');
-
                 var filter = self.currentFilter().toLowerCase();
 
                 if (item.title.toLowerCase().indexOf(filter) !== -1) {
 
                     item.marker.setVisible(true);
+
                 } else {
 
                     item.marker.setVisible(false);
@@ -150,44 +133,6 @@ var ViewModel = function() {
         };
 
     });
-
-    // self.locationSelected = function(item) {
-    //     console.log('in location selected item = ' + item +
-    //         'selected Loc = ' + self.selectedLoc());
-    //     if (item == self.selectedLoc())  {
-    //         return "filterListItem"
-    //     } else {
-    //         return "listItem";
-    //     }
-    // };
-
-
-    // A filter item on the left hand list has been selected
-    self.filterButtonClick = function (item) {
-
-        console.log('item button has been clicked = ' + item.title);
-
-        // item.isSelected(true);
-
-        if (self.currentLoc) {
-            // console.log('in filter button client current loc')
-            self.currentLoc.isSelected(false);
-        }
-
-        self.currentLoc = item;
-        item.isSelected(true);
-
-
-        // self.selectedLoc = item.title;
-
-        if (item.isSelected) {
-
-            // console.log('item has been selected title = ' + item.title);
-            populateInfoWindow(item.marker, infoWindow)
-
-        };
-
-    };
 
 
     // Set all markers to be visible on map
@@ -205,6 +150,29 @@ var ViewModel = function() {
 
     }
 
+        // A filter item on the left hand list has been selected
+    self.filterButtonClick = function (item) {
+
+        if (self.currentSelectedLoc) {  // if not the first time...
+
+            self.currentSelectedLoc.isSelected(false);
+
+            console.log('current selected loc = ' + item.title);
+
+        }
+
+        if (self.currentSelectedLoc != item) {
+            console.log('current selected loc != item');
+            self.currentSelectedLoc = item;
+            item.isSelected(true);
+            populateInfoWindow(item.marker, infoWindow);
+        } else {
+            infoWindow.close();
+            currentMarker.setAnimation(null)
+        }
+
+    };
+
 }
 
 
@@ -212,15 +180,9 @@ var ViewModel = function() {
 function initMap() {
 
     // Create a new map
-
-    // currentLocations = new DataModel().locations;    // List of locations
-    console.log('in initMap');
-
     map = new google.maps.Map(document.getElementById('map'), {
           center: new DataModel().Cambridge.center,
           zoom: 12});
-
-    // console.log('current locs length ' + currentLocations().length);
 
     for (var i = 0; i < currentLocations().length; i++) {
 
@@ -252,17 +214,13 @@ function initMap() {
 // Show the info window popup and all data, including Yelp
 function populateInfoWindow(marker, infoWindow) {
 
-    // if (infoWindow.marker != marker) {
-
         infoWindow.setContent('<div>Loading...</div>'); // Show loading message
         infoWindow.marker = marker;
         if (currentMarker) currentMarker.setAnimation(null);
         currentMarker = marker;
 
-
         // Clear marker property when the infowindow is closed
         infoWindow.addListener('closeclick', function() {
-            //marker = null;
             currentMarker.setAnimation(null);
 
         });
@@ -270,7 +228,7 @@ function populateInfoWindow(marker, infoWindow) {
         getYelp(marker, infoWindow);
         marker.setAnimation(google.maps.Animation.BOUNCE);
         infoWindow.open(map, marker);
-    // }
+
 
     // Get the Yelp info to populate the info window
     function getYelp(marker, infoWindow) {
@@ -287,7 +245,6 @@ function populateInfoWindow(marker, infoWindow) {
             "crossDomain": true,
             "url": url,
             "method": "GET",
-            // "dataType": "json",
             "headers": {
                 "authorization": "Bearer " + token,
                 "cache-control": "public"}
@@ -309,7 +266,6 @@ function populateInfoWindow(marker, infoWindow) {
                     '<br>' +
                     '<a class="yelpLink" target="_blank" href="' +
                         response.url + '">View on Yelp</a>'
-                    // '<img src="' + response.image-url + '</img>'
                     );
 
             }).fail(function(response, status){

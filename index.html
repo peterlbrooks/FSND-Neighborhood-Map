@@ -9,33 +9,30 @@
 <body>
     <div class="container">
         <!-- Header / row 1 -->
-        <div class="col-3 title white-border-right">Locations</div>
         <div class='img-container'>
             <img class="col-2" src="img/world.png"></img>
         </div>
+        <div class="col-3 title">Locations</div>
         <div class="col-7 title">Interesting Museums of Boston</div>
 
-        <!-- Divider / row 2 -->
-        <div class="col-12 divider"></div>
+        <!-- Detail filters and map -->
+        <div class="col-12 detail-container">
+            <div class="col-3 column-container">
+                <div class=filter-container>
+                    <input class="col-9" type="text" name="filter" placeholder="selection" data-bind="textInput: currentFilter">
+                    <span class="col-3 filter-text">Filter</span>
+                </div>
+                <div class="col-12 list-container"
+                    data-bind="foreach: filteredLocs">
+                    <button class="listItem" data-bind="text: $data.title,
+                    click: $parent.filterButtonClick,
+                    css: {listItemSelected: isSelected() == true}"></button>
+                </div>
 
-        <!-- Filter / row 3 -->
-        <input class="col-2" type="text" name="filter" placeholder="selection" data-bind="textInput: currentFilter">
-        <!-- <div class="col-1 filter-button-container">
-            <div class="col-2"></div>
-            <button class="filter-button" data-bind="click: filterButtonClick">
-                <img class="col-2" src="img/filter.png"></img>
-                <span class="col-8">Filter</span>
-             </button>
-        </div> -->
-        <div class = "col-9"></div>
-
-        <!-- Content rows -->
-        <div class="col-3 list-container" data-bind="foreach: filteredLocs">
-            <button class="listItem" data-bind="text: $data.title,
-                click: $parent.filterButtonClick,
-                css: {listItemSelected: isSelected() == true}"></button>
+            </div>
+            <!-- Map -->
+            <div class="col-9" id="map"></div>
         </div>
-        <div class="col-9" id="map"></div>
 
     </div>
 
