@@ -89,14 +89,13 @@ var DataModel = function(locations) {
     self.Cambridge = { center: {lat: 42.3736, lng: -71.1097} };
     self.filterText = "";
 
-}
+};
 
 // Global vars
 var map;
 var infoWindow;
 var currentLocations = ko.observableArray();
 var currentMarker;
-
 
 // View Model
 var ViewModel = function() {
@@ -116,8 +115,8 @@ var ViewModel = function() {
     } else {
 
         // if offline show alert
-        window.alert('Sorry - you are not connected to the internet.' +
-            ' Please retry later.');
+        window.alert("Sorry - you are not connected to the internet." +
+            " Please retry later.");
 
     }
 
@@ -143,13 +142,13 @@ var ViewModel = function() {
                 } else {
 
                     item.marker.setVisible(false);  // hide the marker
-                };
+                }
 
                 // return item title if item title contains the filter text
                 return item.title.toLowerCase().indexOf(filter) !== -1;
             });
 
-        };
+        }
 
     });
 
@@ -160,15 +159,15 @@ var ViewModel = function() {
         for (var i = 0; i < currentLocations().length; i++) {
 
             // make each location's marker visible
-           if (typeof currentLocations()[i].marker.title !== 'undefined') {
+           if (typeof currentLocations()[i].marker.title !== "undefined") {
 
                 currentLocations()[i].marker.setVisible(true)
 
-            };
+            }
 
-        };
+        }
 
-    };
+    }
 
 
     // a filter item (location name) on the left hand list has been selected
@@ -178,7 +177,7 @@ var ViewModel = function() {
 
             self.currentSelectedLoc.isSelected(false);  // unselect it
 
-        };
+        }
 
         if (self.currentSelectedLoc != item) {  // if a new item is clicked
 
@@ -192,29 +191,45 @@ var ViewModel = function() {
             infoWindow.close();             // close the open window
             currentMarker.setAnimation(null)// stop the animation
 
-        };
+        }
 
-    };  // end of filterButtonClick
+    }  // end of filterButtonClick
 
-};
+
+    self.burgerButtonClick = function () {
+
+        self.showFilterColumn(!self.showFilterColumn());    // change DOMs
+
+    }
+
+}
 
 function isOnline() {   // check if system is online or offline
 
         var isOnline = window.navigator.onLine;
         return isOnline ? true : false;
 
-    };
+    }
 
+
+function mapError(){
+    alert("Error loading Google map - please try again later");
+}
 
 // Show map (called from html)
 function initMap() {
 
-    self = this;
+    var self = this;
 
     // Create a new map
-    map = new google.maps.Map(document.getElementById('map'), {
-          center: new DataModel().Cambridge.center,
+    var center = new DataModel().Cambridge.center
+    map = new google.maps.Map(document.getElementById("map"), {
+          center: center,
           zoom: 12});
+
+    google.maps.event.addDomListener(window, "resize", function(){
+        map.setCenter(center);
+    });
 
     for (var i = 0; i < currentLocations().length; i++) {
 
@@ -228,28 +243,30 @@ function initMap() {
             map: map});
 
         currentLocations()[i].marker = marker;
-        currentLocations()[i].marker.addListener('click', function() {
-        populateInfoWindow(self, infoWindow);
+        infoWindow = new google.maps.InfoWindow();  // Add the info window
+
+        currentLocations()[i].marker.addListener("click", function() {
+            var self = this;
+            populateInfoWindow(self, infoWindow);
 
         });
 
-        infoWindow = new google.maps.InfoWindow();  // Add the info window
 
-    };
+    }
 
-};
+}
 
 
 // Show the info window popup and all data, including Yelp
 function populateInfoWindow(marker, infoWindow) {
 
-        infoWindow.setContent('<div>Loading...</div>'); // Show loading message
+        infoWindow.setContent("<div>Loading...</div>"); // Show loading message
         infoWindow.marker = marker;
         if (currentMarker) currentMarker.setAnimation(null);
         currentMarker = marker;
 
         // Clear marker property when the infowindow is closed
-        infoWindow.addListener('closeclick', function() {
+        infoWindow.addListener("closeclick", function() {
             currentMarker.setAnimation(null);
 
         });
@@ -263,9 +280,9 @@ function populateInfoWindow(marker, infoWindow) {
     function getYelp(marker, infoWindow) {
 
         // Use cors-anywhere proxy service from herokuapp
-        var token = 'qWHEGkT5IzrrcF1aeeujhoSHLB2pAhzdGeJPCJr4UIvVqR3bNChZ2cOp0Y3PKXVI5UhL9jrJ9tE5L0dFZWxNBcJW02w29CygavY9QcBbrqHjU2rs3PL7KYjFSVdEWnYx';
-        var crossCorsURL = 'https://cors-anywhere.herokuapp.com/'
-        var yelpURL = 'https://api.yelp.com/v3/businesses/'
+        var token = "qWHEGkT5IzrrcF1aeeujhoSHLB2pAhzdGeJPCJr4UIvVqR3bNChZ2cOp0Y3PKXVI5UhL9jrJ9tE5L0dFZWxNBcJW02w29CygavY9QcBbrqHjU2rs3PL7KYjFSVdEWnYx";
+        var crossCorsURL = "https://cors-anywhere.herokuapp.com/"
+        var yelpURL = "https://api.yelp.com/v3/businesses/"
 
         var url = crossCorsURL + yelpURL + marker.yelpID;
 
@@ -282,35 +299,35 @@ function populateInfoWindow(marker, infoWindow) {
                 if (response.is_open_now == true) { isOpenNow = "Yes"; }
 
                 infoWindow.setContent(
-                    '<div class="yelpTitle">' + marker.title + '</div>' +
-                    '<br>' +
-                    '<a class="yelpLink" target="_blank" href="' +
-                        response.url + '">Yelp Info (Click to View)</a>' +
-                    '<br>' +
-                    '<div class="textLeft">Rating: ' +
-                        response.rating + '</div>' +
-                    '<div class="textLeft">Website: ' +
-                        marker.website + '</div>' +
-                    '<div class="textLeft">Phone: ' +
-                        response.phone + '</div>' +
-                    '<div class="textLeft">Open Now?: ' +
-                        isOpenNow + '</div>'
+                    "<div class='yelpTitle'>" + marker.title + "</div>" +
+                    "<br>" +
+                    "<a class='yelpLink' target='_blank' href='" +
+                        response.url + "'>Yelp Info (Click to View)</a>'" +
+                    "<br>" +
+                    "<div class='textLeft'>Rating: " +
+                        response.rating + "</div>" +
+                    "<div class='textLeft'>Website: " +
+                        marker.website + "</div>" +
+                    "<div class='textLeft'>Phone: " +
+                        response.phone + "</div>" +
+                    "<div class='textLeft'>Open Now?: " +
+                        isOpenNow + "</div>"
                     );
 
             }).fail(function(response, status){
-                // TODO
-                infoWindow.setContent(
-                    'Sorry - Yelp information detail is not available.' +
-                    'Please try again later'
+
+                infoWindow.setContent(  // if Yelp error
+                    "Sorry - Yelp information detail is not available." +
+                    + "Please try again later"
 
                     );
 
         });
 
-    };
+    }
 
 
-};
+}
 
 
 // Knockout.js binding of the View Model (which includes global vars!)

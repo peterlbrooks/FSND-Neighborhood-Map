@@ -12,40 +12,38 @@
     <div class="container">
 
         <!-- header row -->
-        <!-- <div class="col-1 img-container">
-            <img src="img/burger.png" id="burger"></img>
-        </div> -->
-        <div class="col-3 title">Locations</div>
-        <div class="col-1 burger-container">
-            <button class="burger-line"></button>
-            <button class="burger-line"></button>
-            <button class="burger-line"></button>
-        </div>
-        <div class="col-6 title">Interesting Museums of Boston</div>
+        <div class="col-2 title" data-bind="visible: showFilterColumn">Locations</div>
+        <button class="col-1 burger-container" data-bind="click: burgerButtonClick">
+            <div class="burger-line"></div>
+            <div class="burger-line"></div>
+            <div class="burger-line"></div>
+        </button>
+        <div class="col-9 title" data-bind="css: {'col-11': showFilterColumn() == false}">Interesting Museums of Boston</div>
 
-        <!-- detail filters and map -->
+        <!-- detail filters and map section (under header row)-->
         <div class="col-12 detail-container">
 
             <!-- left hand column -->
-            <div class="col-3 column-container" data-bind="visible: showFilterColumn">
+            <div class="col-3 column-container" data-bind="visible: showFilterColumn()">
 
-                <!-- filter text box row -->
+                <!-- filter text box input line -->
                 <div class="filter-container">
                     <input class="col-9" type="text" name="filter" placeholder="selection" data-bind="textInput: currentFilter">
                     <span class="col-3 filter-text">Filter</span>
                 </div>
 
                 <!-- column of locations -->
-                <div class="list-container"
-                    data-bind="foreach: filteredLocs">
+                <div class="list-container" data-bind="foreach: filteredLocs">
                     <button class="listItem" data-bind="text: $data.title,
                     click: $parent.filterItemClick,
                     css: {listItemSelected: isSelected() == true}"></button>
                 </div>
 
             </div>
+
             <!-- map -->
-            <div class="col-9" id="map"></div>
+            <div class="col-9" data-bind="css: {'col-12': showFilterColumn() == false}" id="map"></div>
+
         </div>
 
     </div>
@@ -54,8 +52,8 @@
     <script src="js/lib/knockout-3.2.0.js"></script>
     <script src="js/lib/jquery.min.js"></script>
     <script src="js/app.js"></script>
-    <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3t3W7-esayulO7alBP3BAZTt_a7RLivM&v=3&callback=initMap" async defer>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3t3W7-esayulO7alBP3BAZTt_a7RLivM&v=3&callback=initMap" async defer onerror="mapError()">
     </script>
 </body>
 </html>

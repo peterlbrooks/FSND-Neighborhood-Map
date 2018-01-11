@@ -37,16 +37,18 @@ html, body {
     padding-left:   10px;
 }
 
-
 .burger-container {
     display: flex;
     flex-direction: column;
+    background-color: black;
+    align-items: center;
+    border: 0;
 }
 
 .burger-line {
-    width: 2vw;
+    width: 2vh;
     height: 2px;
-    background-color: lightgray;
+    background-color: #3498DB;
     margin: 2px;
     border: 0;
     padding: 0;
@@ -128,9 +130,8 @@ vh works better here */
 
 /* map column in the UI */
 #map {  /* # handles 'id=' */
-    min-height: 400px;
-    max-width: 75%;
-    height: 97.5vh;
+    height: 96vh;
+    width: 100%;
 }
 
 
