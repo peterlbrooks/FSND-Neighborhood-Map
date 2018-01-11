@@ -1,10 +1,10 @@
 * {
-    font-family: "Helvetica Neue Bold", Helvetica, Arial, sans-serif;
-    font-weight: 700;
-    box-sizing: border-box;
+    font-family:    "Helvetica Neue Bold", Helvetica, Arial, sans-serif;
+    font-weight:    700;
+    box-sizing:     border-box;
 }
 
-/* Per google API documentation */
+/* per google API documentation */
 html, body {
     height: 100%;
     margin: 0;
@@ -13,7 +13,7 @@ html, body {
     position: relative;
   }
 
-/* FLEXBOX */
+/* flexbox css */
 
 .container {
     display: flex;
@@ -23,18 +23,39 @@ html, body {
     align-items: center;    /* Will align images */
 }
 
-/* Title line */
+/* title line */
 .title {
-    text-align: center;
-    font-size: 2vw;
-    font-weight: 800;
-    /*min-height: 6vh;*/
+    text-align:     center;
+    font-size:      2vw;
+    font-weight:    800;
 }
 
-/* Image                                                        */
-/* To keep image proportiately scaled:                          */
-/* Put img in flex container then keep height = column-width:   */
-/* Could use width=100% but this ims wrong for this columns:    */
+.title-left-align {
+    text-align:     left;
+    font-size:      2vw;
+    font-weight:    800;
+    padding-left:   10px;
+}
+
+
+.burger-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.burger-line {
+    width: 2vw;
+    height: 2px;
+    background-color: lightgray;
+    margin: 2px;
+    border: 0;
+    padding: 0;
+}
+
+
+/* image: to keep image proportiately scaled:
+Put img in flex container then keep height = width. Could use vh or vw but
+vh works better here */
 .img-container {
     display: flex;
     flex-direction: column;
@@ -47,12 +68,14 @@ html, body {
     margin-right: 1vw;
 }
 
-/* Detail (main) section */
+
+/* detail (main) section */
 .detail-container {
     display: flex;
 }
 
-/* Filter section on left */
+
+/* filter section on left */
 .column-container {
     display: flex;
     flex-direction: column;
@@ -73,20 +96,12 @@ html, body {
     font-weight: 200;
     padding-top: 3px;
     padding-bottom: 2px;
-    font-size: 1.75vh;
+    font-size: 10px;
     vertical-align: middle;
     text-align: center;
 }
 
-.filter-img-container img {
-    font-weight: 200;
-    font-size: 75%;
-    height: 1vw;
-    width: 1vw;
-}
-
-
-/* List locations column */
+/* list locations column */
 .list-container {
     display: flex;
     flex-direction: column;
@@ -111,19 +126,20 @@ html, body {
 }
 
 
-/* Map column */
+/* map column in the UI */
 #map {  /* # handles 'id=' */
     min-height: 400px;
     max-width: 75%;
-    height: 94vh;
+    height: 97.5vh;
 }
 
 
-/* Map marker info window */
+/* google map marker info window */
 .yelpTitle {
     text-align: left;
     text-decoration: underline;
-    color: darkgray;
+    color: black;
+    text-align: center;
 }
 
 .yelpLink {
@@ -134,6 +150,7 @@ html, body {
 
 .textLeft {
     text-align: left;
+    color: black;
 }
 
 

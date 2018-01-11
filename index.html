@@ -7,30 +7,44 @@
     <title>Interesting Museums of Boston</title>
 </head>
 <body>
-    <div class="container">
-        <!-- Header / row 1 -->
-        <div class='img-container'>
-            <img class="col-2" src="img/world.png"></img>
-        </div>
-        <div class="col-3 title">Locations</div>
-        <div class="col-7 title">Interesting Museums of Boston</div>
 
-        <!-- Detail filters and map -->
+    <!-- flexbox being used not bootstrap -->
+    <div class="container">
+
+        <!-- header row -->
+        <!-- <div class="col-1 img-container">
+            <img src="img/burger.png" id="burger"></img>
+        </div> -->
+        <div class="col-3 title">Locations</div>
+        <div class="col-1 burger-container">
+            <button class="burger-line"></button>
+            <button class="burger-line"></button>
+            <button class="burger-line"></button>
+        </div>
+        <div class="col-6 title">Interesting Museums of Boston</div>
+
+        <!-- detail filters and map -->
         <div class="col-12 detail-container">
-            <div class="col-3 column-container">
-                <div class=filter-container>
+
+            <!-- left hand column -->
+            <div class="col-3 column-container" data-bind="visible: showFilterColumn">
+
+                <!-- filter text box row -->
+                <div class="filter-container">
                     <input class="col-9" type="text" name="filter" placeholder="selection" data-bind="textInput: currentFilter">
                     <span class="col-3 filter-text">Filter</span>
                 </div>
-                <div class="col-12 list-container"
+
+                <!-- column of locations -->
+                <div class="list-container"
                     data-bind="foreach: filteredLocs">
                     <button class="listItem" data-bind="text: $data.title,
-                    click: $parent.filterButtonClick,
+                    click: $parent.filterItemClick,
                     css: {listItemSelected: isSelected() == true}"></button>
                 </div>
 
             </div>
-            <!-- Map -->
+            <!-- map -->
             <div class="col-9" id="map"></div>
         </div>
 
@@ -41,7 +55,7 @@
     <script src="js/lib/jquery.min.js"></script>
     <script src="js/app.js"></script>
     <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3t3W7-esayulO7alBP3BAZTt_a7RLivM&v=3&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3t3W7-esayulO7alBP3BAZTt_a7RLivM&v=3&callback=initMap" async defer>
     </script>
 </body>
 </html>

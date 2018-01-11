@@ -94,7 +94,7 @@ var DataModel = function(locations) {
 // Global vars
 var map;
 var infoWindow;
-var currentLocations = ko.observableArray( new DataModel().locations );
+var currentLocations = ko.observableArray();
 var currentMarker;
 
 
@@ -102,31 +102,50 @@ var currentMarker;
 var ViewModel = function() {
 
     var self = this;
-    self.currentFilter = ko.observable();   // current filter text
-    self.currentSelectedLoc;                        // currently selected location
 
+    self.currentFilter = ko.observable();   // current filter text
+    self.currentSelectedLoc;                // currently selected location
+    self.showFilterColumn = ko.observable(true);
+
+   // check if system is online
+   if (isOnline()) {
+
+       // only show locations for filtering if online
+       currentLocations = ko.observableArray(new DataModel().locations);
+
+    } else {
+
+        // if offline show alert
+        window.alert('Sorry - you are not connected to the internet.' +
+            ' Please retry later.');
+
+    }
+
+    // calculate filtered locations
     self.filteredLocs = ko.pureComputed(function () {
 
-        if (!self.currentFilter()) {
+        if (!self.currentFilter()) {    // if not exist, first time in app
 
             setAllVisible();
             return currentLocations();
 
-        } else {
+        } else {    // all this is to change color of the selected list item
 
             return ko.utils.arrayFilter(currentLocations(), function (item) {
 
                 var filter = self.currentFilter().toLowerCase();
 
+                // show item's marker if it is in filtered list else hide it
                 if (item.title.toLowerCase().indexOf(filter) !== -1) {
 
-                    item.marker.setVisible(true);
+                    item.marker.setVisible(true);   // show the marker
 
                 } else {
 
-                    item.marker.setVisible(false);
+                    item.marker.setVisible(false);  // hide the marker
                 };
 
+                // return item title if item title contains the filter text
                 return item.title.toLowerCase().indexOf(filter) !== -1;
             });
 
@@ -135,49 +154,62 @@ var ViewModel = function() {
     });
 
 
-    // Set all markers to be visible on map
+    // set all markers to be visible on map
     function setAllVisible() {
 
         for (var i = 0; i < currentLocations().length; i++) {
 
+            // make each location's marker visible
            if (typeof currentLocations()[i].marker.title !== 'undefined') {
 
                 currentLocations()[i].marker.setVisible(true)
 
-            }
+            };
 
-        }
-
-    }
-
-        // A filter item on the left hand list has been selected
-    self.filterButtonClick = function (item) {
-
-        if (self.currentSelectedLoc) {  // if not the first time...
-
-            self.currentSelectedLoc.isSelected(false);
-
-            console.log('current selected loc = ' + item.title);
-
-        }
-
-        if (self.currentSelectedLoc != item) {
-            console.log('current selected loc != item');
-            self.currentSelectedLoc = item;
-            item.isSelected(true);
-            populateInfoWindow(item.marker, infoWindow);
-        } else {
-            infoWindow.close();
-            currentMarker.setAnimation(null)
-        }
+        };
 
     };
 
-}
+
+    // a filter item (location name) on the left hand list has been selected
+    self.filterItemClick = function (item) {
+
+        if (self.currentSelectedLoc) {  // if there is a prior selected item
+
+            self.currentSelectedLoc.isSelected(false);  // unselect it
+
+        };
+
+        if (self.currentSelectedLoc != item) {  // if a new item is clicked
+
+            self.currentSelectedLoc = item; // make it the current item
+            item.isSelected(true);          // mark it as selected
+            populateInfoWindow(item.marker, infoWindow);    // show the infoW
+
+        } else {    // prior selected item was re-selected so clear it up
+
+            self.currentSelectedLoc = null; // force all items to be unselected
+            infoWindow.close();             // close the open window
+            currentMarker.setAnimation(null)// stop the animation
+
+        };
+
+    };  // end of filterButtonClick
+
+};
+
+function isOnline() {   // check if system is online or offline
+
+        var isOnline = window.navigator.onLine;
+        return isOnline ? true : false;
+
+    };
 
 
 // Show map (called from html)
 function initMap() {
+
+    self = this;
 
     // Create a new map
     map = new google.maps.Map(document.getElementById('map'), {
@@ -187,7 +219,7 @@ function initMap() {
     for (var i = 0; i < currentLocations().length; i++) {
 
         // Note: if want to add more info to marker for info window
-        // just add a parm
+        // just add a parm. Content is set in getYelp AJAX return.
         var marker = new google.maps.Marker({ // Create the marker
             title: currentLocations()[i].title,
             position: currentLocations()[i].location,
@@ -196,19 +228,16 @@ function initMap() {
             map: map});
 
         currentLocations()[i].marker = marker;
-
         currentLocations()[i].marker.addListener('click', function() {
-
-            self = this;
-            populateInfoWindow(self, infoWindow);
+        populateInfoWindow(self, infoWindow);
 
         });
 
         infoWindow = new google.maps.InfoWindow();  // Add the info window
 
-    }
+    };
 
-}
+};
 
 
 // Show the info window popup and all data, including Yelp
@@ -251,10 +280,13 @@ function populateInfoWindow(marker, infoWindow) {
             }).done(function(response){
                 var isOpenNow = "No";
                 if (response.is_open_now == true) { isOpenNow = "Yes"; }
+
                 infoWindow.setContent(
-                    '<div>' + marker.title + '</div>' +
+                    '<div class="yelpTitle">' + marker.title + '</div>' +
                     '<br>' +
-                    '<div class="yelpTitle">Yelp Info</div>' +
+                    '<a class="yelpLink" target="_blank" href="' +
+                        response.url + '">Yelp Info (Click to View)</a>' +
+                    '<br>' +
                     '<div class="textLeft">Rating: ' +
                         response.rating + '</div>' +
                     '<div class="textLeft">Website: ' +
@@ -262,19 +294,23 @@ function populateInfoWindow(marker, infoWindow) {
                     '<div class="textLeft">Phone: ' +
                         response.phone + '</div>' +
                     '<div class="textLeft">Open Now?: ' +
-                        isOpenNow + '</div>' +
-                    '<br>' +
-                    '<a class="yelpLink" target="_blank" href="' +
-                        response.url + '">View on Yelp</a>'
+                        isOpenNow + '</div>'
                     );
 
             }).fail(function(response, status){
                 // TODO
-        })
+                infoWindow.setContent(
+                    'Sorry - Yelp information detail is not available.' +
+                    'Please try again later'
 
-    }
+                    );
 
-}
+        });
+
+    };
+
+
+};
 
 
 // Knockout.js binding of the View Model (which includes global vars!)
