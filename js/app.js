@@ -1,6 +1,12 @@
-"use strict";
+// JSLINT options
+/* globals ko: false            */
+/* globals $: false             */
+/* globals google: false        */
+/*exported mapError, initMap    */
+
 
 var DataModel = function(locations) {
+    "use strict";
 
     var self = this;
     self.locations = [
@@ -99,11 +105,12 @@ var currentMarker;
 
 // View Model
 var ViewModel = function() {
+    "use strict";
 
     var self = this;
 
     self.currentFilter = ko.observable();   // current filter text
-    self.currentSelectedLoc;                // currently selected location
+    self.currentSelectedLoc = null;                // currently selected location
     self.showFilterColumn = ko.observable(true);
 
    // check if system is online
@@ -156,12 +163,13 @@ var ViewModel = function() {
     // set all markers to be visible on map
     function setAllVisible() {
 
+
         for (var i = 0; i < currentLocations().length; i++) {
 
             // make each location's marker visible
            if (typeof currentLocations()[i].marker.title !== "undefined") {
 
-                currentLocations()[i].marker.setVisible(true)
+                currentLocations()[i].marker.setVisible(true);
 
             }
 
@@ -187,24 +195,25 @@ var ViewModel = function() {
 
         } else {    // prior selected item was re-selected so clear it up
 
-            self.currentSelectedLoc = null; // force all items to be unselected
-            infoWindow.close();             // close the open window
-            currentMarker.setAnimation(null)// stop the animation
+            self.currentSelectedLoc = null;     // force all items to be unselected
+            infoWindow.close();                 // close the open window
+            currentMarker.setAnimation(null);   // stop the animation
 
         }
 
-    }  // end of filterButtonClick
+    };  // end of filterButtonClick
 
 
     self.burgerButtonClick = function () {
 
         self.showFilterColumn(!self.showFilterColumn());    // change DOMs
 
-    }
+    };
 
-}
+};
 
 function isOnline() {   // check if system is online or offline
+    "use strict";
 
         var isOnline = window.navigator.onLine;
         return isOnline ? true : false;
@@ -213,16 +222,16 @@ function isOnline() {   // check if system is online or offline
 
 
 function mapError(){
+    "use strict";
+
     alert("Error loading Google map - please try again later");
 }
 
 // Show map (called from html)
 function initMap() {
 
-    var self = this;
-
     // Create a new map
-    var center = new DataModel().Cambridge.center
+    var center = new DataModel().Cambridge.center;
     map = new google.maps.Map(document.getElementById("map"), {
           center: center,
           zoom: 12});
@@ -244,13 +253,18 @@ function initMap() {
 
         currentLocations()[i].marker = marker;
         infoWindow = new google.maps.InfoWindow();  // Add the info window
+        addListener(currentLocations()[i].marker, infoWindow);
 
-        currentLocations()[i].marker.addListener("click", function() {
+    }
+
+    // add the listener to show the infowindow
+    function addListener(marker,infoWindow) {
+        marker.addListener("click", function() {
+
             var self = this;
             populateInfoWindow(self, infoWindow);
 
         });
-
 
     }
 
@@ -259,6 +273,7 @@ function initMap() {
 
 // Show the info window popup and all data, including Yelp
 function populateInfoWindow(marker, infoWindow) {
+    "use strict";
 
         infoWindow.setContent("<div>Loading...</div>"); // Show loading message
         infoWindow.marker = marker;
@@ -279,10 +294,11 @@ function populateInfoWindow(marker, infoWindow) {
     // Get the Yelp info to populate the info window
     function getYelp(marker, infoWindow) {
 
+
         // Use cors-anywhere proxy service from herokuapp
         var token = "qWHEGkT5IzrrcF1aeeujhoSHLB2pAhzdGeJPCJr4UIvVqR3bNChZ2cOp0Y3PKXVI5UhL9jrJ9tE5L0dFZWxNBcJW02w29CygavY9QcBbrqHjU2rs3PL7KYjFSVdEWnYx";
-        var crossCorsURL = "https://cors-anywhere.herokuapp.com/"
-        var yelpURL = "https://api.yelp.com/v3/businesses/"
+        var crossCorsURL = "https://cors-anywhere.herokuapp.com/";
+        var yelpURL = "https://api.yelp.com/v3/businesses/";
 
         var url = crossCorsURL + yelpURL + marker.yelpID;
 
@@ -296,7 +312,7 @@ function populateInfoWindow(marker, infoWindow) {
                 "cache-control": "public"}
             }).done(function(response){
                 var isOpenNow = "No";
-                if (response.is_open_now == true) { isOpenNow = "Yes"; }
+                if (response.is_open_now === true) { isOpenNow = "Yes"; }
 
                 infoWindow.setContent(
                     "<div class='yelpTitle'>" + marker.title + "</div>" +
@@ -318,7 +334,7 @@ function populateInfoWindow(marker, infoWindow) {
 
                 infoWindow.setContent(  // if Yelp error
                     "Sorry - Yelp information detail is not available." +
-                    + "Please try again later"
+                    "Please try again later"
 
                     );
 

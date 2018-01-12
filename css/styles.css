@@ -6,21 +6,21 @@
 
 /* per google API documentation */
 html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    position: relative;
+    height:         100%;
+    margin:         0;
+    padding:        0;
+    border:         0;
+    position:       relative;
   }
 
 /* flexbox css */
 
 .container {
-    display: flex;
-    flex-wrap: wrap;
-    color: lightgray;
-    background-color: black;
-    align-items: center;    /* Will align images */
+    display:            flex;
+    flex-wrap:          wrap;
+    color:              lightgray;
+    background-color:   black;
+    align-items:        center;    /* Will align images */
 }
 
 /* title line */
@@ -38,20 +38,20 @@ html, body {
 }
 
 .burger-container {
-    display: flex;
-    flex-direction: column;
-    background-color: black;
-    align-items: center;
-    border: 0;
+    display:            flex;
+    flex-direction:     column;
+    background-color:   black;
+    align-items:        center;
+    border:             0;
 }
 
 .burger-line {
-    width: 2vh;
-    height: 2px;
-    background-color: #3498DB;
-    margin: 2px;
-    border: 0;
-    padding: 0;
+    width:              2vh;
+    height:             2px;
+    background-color:   #3498DB;
+    margin:             2px;
+    border:             0;
+    padding:            0;
 }
 
 
@@ -59,147 +59,147 @@ html, body {
 Put img in flex container then keep height = width. Could use vh or vw but
 vh works better here */
 .img-container {
-    display: flex;
-    flex-direction: column;
+    display:            flex;
+    flex-direction:     column;
 }
 
 .img-container img {
-    height: 4vh;
-    width: 4vh;
-    margin-left: 1vw;
-    margin-right: 1vw;
+    height:             4vh;
+    width:              4vh;
+    margin-left:        1vw;
+    margin-right:       1vw;
 }
 
 
 /* detail (main) section */
 .detail-container {
-    display: flex;
+    display:            flex;
 }
 
 
 /* filter section on left */
 .column-container {
-    display: flex;
-    flex-direction: column;
+    display:            flex;
+    flex-direction:     column;
 }
 
 .filter-container {
-    display: flex;
+    display:            flex;
 }
 
 .filter-text-container {
-    display: flex;
-    flex-direction: column;
+    display:            flex;
+    flex-direction:     column;
 }
 
 .filter-text {
-    background-color: #3498DB;
-    color: white;
-    font-weight: 200;
-    padding-top: 3px;
-    padding-bottom: 2px;
-    font-size: 10px;
-    vertical-align: middle;
-    text-align: center;
+    background-color:   #3498DB;
+    color:              white;
+    font-weight:        200;
+    padding-top:        3px;
+    padding-bottom:     2px;
+    font-size:          10px;
+    vertical-align:     middle;
+    text-align:         center;
 }
 
 /* list locations column */
 .list-container {
-    display: flex;
-    flex-direction: column;
+    display:            flex;
+    flex-direction:     column;
 }
 
 .listItem {
-    padding-top: 1vw;
-    padding-bottom: 1vw;
-    color: lightgray;
-    text-align: left;
-    border: 0;
-    background-color: black;
+    padding-top:        1vw;
+    padding-bottom:     1vw;
+    color:              lightgray;
+    text-align:         left;
+    border:             0;
+    background-color:   black;
 }
 
 .listItemSelected {
-    padding-top: 1vw;
-    padding-bottom: 1vw;
-    color: white;
-    text-align: left;
-    border: 0;
-    background-color: lightgray;
+    padding-top:        1vw;
+    padding-bottom:     1vw;
+    color:              white;
+    text-align:         left;
+    border:             0;
+    background-color:   lightgray;
 }
 
 
 /* map column in the UI */
 #map {  /* # handles 'id=' */
-    height: 96vh;
-    width: 100%;
+    height:             96vh;
+    width:              100%;
 }
 
 
 /* google map marker info window */
 .yelpTitle {
-    text-align: left;
-    text-decoration: underline;
-    color: black;
-    text-align: center;
+    text-align:         left;
+    text-decoration:    underline;
+    color:              black;
+    text-align:         center;
 }
 
 .yelpLink {
-    text-align: left;
-    float: left;
-    color: dodgerblue;
+    text-align:         left;
+    float:              left;
+    color:              dodgerblue;
 }
 
 .textLeft {
-    text-align: left;
-    color: black;
+    text-align:         left;
+    color:              black;
 }
 
 
 /* Column sizings */
 .col-1 {
-     width: calc(1 * 100% / 12);
+     width:             calc(1 * 100% / 12);
 }
 
 .col-2 {
-     width: calc(2 * 100% / 12);
+     width:             calc(2 * 100% / 12);
 }
 
 .col-3 {
-     width: calc(3 * 100% / 12);
+     width:             calc(3 * 100% / 12);
 }
 
 .col-4 {
-    width: calc(4 * 100% / 12);
+    width:              calc(4 * 100% / 12);
 }
 
 .col-5 {
-     width: calc(5 * 100% / 12);
+     width:             calc(5 * 100% / 12);
 }
 
 .col-6 {
-     width: calc(6 * 100% / 12);
+                        width: calc(6 * 100% / 12);
 }
 
 .col-7 {
-     width: calc(7 * 100% / 12);
+                        width: calc(7 * 100% / 12);
 }
 
 .col-8 {
-     width: calc(8 * 100% / 12);
+                        width: calc(8 * 100% / 12);
 }
 
 .col-9 {
-     width: calc(9 * 100% / 12);
+                        width: calc(9 * 100% / 12);
 }
 
 .col-10 {
-     width: calc(10 * 100% / 12);
+                        width: calc(10 * 100% / 12);
 }
 
 .col-11 {
-     width: calc(11 * 100% / 12);
+                        width: calc(11 * 100% / 12);
 }
 
 .col-12 {
-     width: calc(12 * 100% / 12);
+                        width: calc(12 * 100% / 12);
 }
