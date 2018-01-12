@@ -31,6 +31,6 @@ How to Use
 Technical Background
 
 1. The app is developed using Flexbox, Javascript, and Knockout.
-2. jQuery and Ajax are used to access Yelp API.
+2. jQuery and Ajax are used to access the Yelp API.
 3. Google Map API is used for mapping and location services.
 
